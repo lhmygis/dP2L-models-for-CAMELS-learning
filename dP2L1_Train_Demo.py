@@ -737,7 +737,7 @@ def train_model(model, train_x1, train_x2, train_y, ep_number, lrate, save_path)
 save_path_models = f'G:/hydro_dl_project/dPL_Experiment/Models_h5/JOH/dP2L1.h5'
 
 model = create_model(input_xd_shape=(train_x.shape[1], train_x.shape[2]), input_xd_shape1=(train_x1.shape[1], train_x1.shape[2]),
-                     hodes = 64, seed = 200)
+                     hodes = 64, seed = 101)
 model.summary()
 
 prnn_ealstm_history = train_model(model=model, train_x1=train_x,train_x2=train_x1[5:],
