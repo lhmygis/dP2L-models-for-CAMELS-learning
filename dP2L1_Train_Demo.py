@@ -35,7 +35,9 @@ training_start = '1990-10-01'
 training_end = '2010-09-30'
 
 
-# Part of CAMELS basin IDs for training, If you want to train all basins, add all CAMELS basin IDs to the basin_id array.
+# CAMELS basin ID used for training. 
+#If you want to train all basins, add all CAMELS basin IDs to the basin_id array. 
+#In this example, we only provide basin streamflow data for HUC=01 and 02. For other HUC data, please download the complete CAMELS dataset and add other HUC data to the path:"../the project path/camels_data/usgs_streamflow/.."
 basin_id = [
 '1022500',
 '1031500',
@@ -47,7 +49,9 @@ basin_id = [
 '1073000',
 '1078000',
 '1123000',
-'1134500'
+'1134500',
+    ...
+    ...
 ]
 
 
