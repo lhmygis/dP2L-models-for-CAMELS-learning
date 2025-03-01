@@ -13,11 +13,12 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 tf.compat.v1.disable_eager_execution()
 
 
-
 #dP2L2 model demo for Journal of Hydrology paper
+#The model file was developed by Heng Li (email:lh_mygis@163.com), Chunxiao Zhang, Yuqian Hu and other researchers from China University of Geosciences, Beijing.
 
 
-#This is 
+
+#This class is used to standardize the meteorological forcing inputs required by LSTMpet.
 class ScaleLayer_regional_parameterization(Layer):
 
 
@@ -25,20 +26,20 @@ class ScaleLayer_regional_parameterization(Layer):
         super(ScaleLayer_regional_parameterization, self).__init__(**kwargs)
 
     def build(self, input_shape):
-        self.t_mean = self.add_weight(name='t_mean', shape=(1,),  #
+        self.t_mean = self.add_weight(name='t_mean', shape=(1,),  
                                  initializer=initializers.Constant(value=10.50360728383252),
                                  constraint=constraints.min_max_norm(min_value=0.0, max_value=10000.0, rate=0.9),
                                  trainable=False)
-        self.t_std = self.add_weight(name='t_std', shape=(1,),  #
+        self.t_std = self.add_weight(name='t_std', shape=(1,), 
                                  initializer=initializers.Constant(value=10.30964231561827),
                                  constraint=constraints.min_max_norm(min_value=0.0, max_value=10000.0, rate=0.9),
                                  trainable=False)
 
-        self.dayl_mean = self.add_weight(name='dayl_mean', shape=(1,),  #
+        self.dayl_mean = self.add_weight(name='dayl_mean', shape=(1,), 
                                  initializer=initializers.Constant(value=0.49992111027762387),
                                  constraint=constraints.min_max_norm(min_value=0.0, max_value=10000.0, rate=0.9),
                                  trainable=False)
-        self.dayl_std = self.add_weight(name='dayl_std', shape=(1,),  #
+        self.dayl_std = self.add_weight(name='dayl_std', shape=(1,), 
                                  initializer=initializers.Constant(value=0.08233807739244361),
                                  constraint=constraints.min_max_norm(min_value=0.0, max_value=10000.0, rate=0.9),
                                  trainable=False)
@@ -47,9 +48,6 @@ class ScaleLayer_regional_parameterization(Layer):
         super(ScaleLayer_regional_parameterization, self).build(input_shape)
 
     def call(self, inputs):
-        #met(气象输入) = [wrap_number_train, wrap_length, 5('prcp(mm/day)', 'tmean(C)', 'dayl(day)', 'srad(W/m2)', 'vp(Pa)')]
-        print("ScaleLayer_regional_parameterization_Inputs_Shape_PET",inputs.shape)
-
         met = inputs[:,:,:2]
 
         self.t_scaled = (met[:,:,0:1] - self.t_mean) / self.t_std
@@ -64,6 +62,9 @@ class ScaleLayer_regional_parameterization(Layer):
 
     def compute_output_shape(self, input_shape):
         return input_shape
+
+
+#This class is LSTMpet.
 class LSTM_parameterization(Layer):
     def __init__(self, input_xd, hidden_size, seed=200,**kwargs):
         self.input_xd = input_xd
@@ -137,13 +138,11 @@ class LSTM_parameterization(Layer):
 
         #bias_s_batch = K.expand_dims(self.bias_s, axis=0)
         #bias_s_batch = K.repeat_elements(bias_s_batch, rep=batch_size, axis=0)
-        #这里对静态变量通过输入门的相加操作可能有问题,两张量维度不一样, attrs输入这里应该是二维 [batch_size, xs_dim]   , [sample_size, xs_dim]
         #i = K.sigmoid(K.dot(attrs, self.w_sh) + bias_s_batch)
 
         for t in range(seq_len):
             h_0, c_0 = h_x
 
-            #这里也有问题, 必须把forcing数据的seq_len放在第一维 [seq_len, batch_size, xd_dim]
             gates =((K.dot(h_0, self.w_hh) + bias_batch) + K.dot(forcing_seqfir[t], self.w_ih))
             f, i, o, g = tf.split(value=gates, num_or_size_splits=4, axis=1)
 
@@ -159,6 +158,9 @@ class LSTM_parameterization(Layer):
         c_n = K.stack(c_n, axis=0)
 
         return h_n, c_n
+
+
+#This class is the dP2L model
 class regional_dP2L(Layer):
 
     def __init__(self, mode='normal', h_nodes=64, seed=200, **kwargs):
@@ -168,9 +170,6 @@ class regional_dP2L(Layer):
         super(regional_dP2L, self).__init__(**kwargs)
 
     def build(self, input_shape):
-
-
-
         self.prnn_w1 = self.add_weight(name='prnn_w1',
                                        shape=(256, self.h_nodes),
                                        initializer=initializers.RandomUniform(seed=self.seed - 5),
@@ -248,7 +247,7 @@ class regional_dP2L(Layer):
                                        trainable=True)
 
         self.para_b4 = self.add_weight(name='para_b4',
-                                       shape=(16,),
+                                       shape=(6,),
                                        initializer=initializers.zeros(),
                                        trainable=True)
 
@@ -259,26 +258,21 @@ class regional_dP2L(Layer):
 
     def heaviside(self, x):
 
-
         return (K.tanh(5 * x) + 1) / 2
 
-
-
-
     def rainsnowpartition(self, p, t, tmin):
-
-        tmin = tmin * -3  # scale (0, 1) into (-3, 0)
+        
+        tmin = tmin * -3 
 
         psnow = self.heaviside(tmin - t) * p
         prain = self.heaviside(t - tmin) * p
 
         return [psnow, prain]
 
-
     def snowbucket(self, s0, t, ddf, tmax):
 
-        ddf = ddf * 5            # scale (0, 1) into (0, 5)
-        tmax = tmax  * 3          # scale (0, 1) into (0, 3)
+        ddf = ddf * 5           
+        tmax = tmax  * 3          
 
         melt = self.heaviside(t - tmax) * self.heaviside(s0) * K.minimum(s0, ddf * (t - tmax))
 
@@ -287,10 +281,10 @@ class regional_dP2L(Layer):
 
     def soilbucket(self, s1, pet, f, smax, qmax):
 
-        f = f / 10                 # scale (0, 1) into (0, 0.1)
-        smax = smax * 1400 + 100   # scale (0, 1) into (100, 1500)
-        qmax = qmax * 40 + 10      # scale (0, 1) into (10, 50)
-        pet = pet * 29.9 + 0.1          # scale (0, 1) into (0.1, 30.0)
+        f = f / 10                 
+        smax = smax * 1400 + 100   
+        qmax = qmax * 40 + 10      
+        pet = pet * 59.9 + 0.1         
 
         et = self.heaviside(s1) * self.heaviside(s1 - smax) * pet + \
             self.heaviside(s1) * self.heaviside(smax - s1) * pet * (s1 / smax)
@@ -318,9 +312,6 @@ class regional_dP2L(Layer):
         smax = step_in[:, 7:8]
         qmax = step_in[:, 8:9]
 
-
-
-
         [_ps, _pr] = self.rainsnowpartition(p, t, tmin)
 
         _m = self.snowbucket(s0, t, ddf, tmax)
@@ -347,8 +338,6 @@ class regional_dP2L(Layer):
         tmean = inputs[:, :, 1:2] # daily mean temperature
         dayl = inputs[:, :, 2:3]  # daily Daylength
 
-
-
         attrs = inputs[:,:,5:]  # 27 dimensions
 
         # Calculate PET using Hamon’s formulation - EXPHYDRO
@@ -365,7 +354,9 @@ class regional_dP2L(Layer):
         pets = K.permute_dimensions(pets, pattern=(1, 0, 2))
 
 
-        # Learning hydrological parameters using differentiable learning (NN)
+        # Learning hydrological parameters using differentiable learning (NN) ： 
+        #This is a static parameterized channel. 
+        #By adding additional time series inputs, it can be changed to a dynamic parameterized channel similar to the one proposed by Feng et al., (2022, WRR), which can be achieved by connecting an LSTM.
         parameters = K.tanh(K.dot(attrs, self.para_w1)+ self.para_b1) # layer 1
         parameters = K.tanh(K.dot(parameters, self.para_w2)+ self.para_b2) # layer 2
         parameters = K.tanh(K.dot(parameters, self.para_w3)+ self.para_b3) # layer 2
@@ -415,6 +406,8 @@ class regional_dP2L(Layer):
             return (input_shape[0], input_shape[1], 3)
         elif self.mode == "analysis":
             return (input_shape[0], input_shape[1], 4)
+
+#This class is LSTMq
 class LSTMq(Layer):
     def __init__(self, input_xd, hidden_size, seed=200,**kwargs):
         self.input_xd = input_xd
@@ -488,13 +481,11 @@ class LSTMq(Layer):
 
         #bias_s_batch = K.expand_dims(self.bias_s, axis=0)
         #bias_s_batch = K.repeat_elements(bias_s_batch, rep=batch_size, axis=0)
-        #这里对静态变量通过输入门的相加操作可能有问题,两张量维度不一样, attrs输入这里应该是二维 [batch_size, xs_dim]   , [sample_size, xs_dim]
         #i = K.sigmoid(K.dot(attrs, self.w_sh) + bias_s_batch)
 
         for t in range(seq_len):
             h_0, c_0 = h_x
-
-            #这里也有问题, 必须把forcing数据的seq_len放在第一维 [seq_len, batch_size, xd_dim]
+            
             gates =((K.dot(h_0, self.w_hh) + bias_batch) + K.dot(forcing_seqfir[t], self.w_ih))
             f, i, o, g = tf.split(value=gates, num_or_size_splits=4, axis=1)
 
