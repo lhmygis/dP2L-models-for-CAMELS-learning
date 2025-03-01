@@ -14,7 +14,10 @@ tf.compat.v1.disable_eager_execution()
 
 
 
-#dP2L1 model demo
+#dP2L2 model demo for Journal of Hydrology paper
+
+
+#This is 
 class ScaleLayer_regional_parameterization(Layer):
 
 
