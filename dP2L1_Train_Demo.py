@@ -27,7 +27,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 os.environ['KMP_WARNINGS'] = '0'
 
 working_path = "../the project path"  #The root directory where all .py files are located
-attrs_path = "../the project path/CAMELS_attributes/531basin_attributes.csv" #csv file of standardized values of 27 basin attributes for 531 CAMELS basins
+attrs_path = "../the project path/CAMELS_attributes/attributedata_671.csv" #csv file of standardized values of 27 basin attributes for 531 CAMELS basins
 
 
 # Training Period
