@@ -15,5 +15,5 @@ The python environment required to run the GPU version dP2L model includes: absl
   
 "../the project path/CAMELS_attributes/attributedata_671.csv"：CAMELS basin attribute data (unstandardized)  
 "../the project path/camels_h5/usgs_streamflow/HUC_id(e.g., 01, 02, 03, 04, 05...)/{basin_id}.txt"：CAMELS basin streamflow data  
-"../the project path/camels_h5/basin_mean_forcing/daymet/HUC_id(e.g., 01, 02, 03, 04, 05...)/{basin_id}_lump_cida_forcing_leap.txtt"：CAMELS basin mean_forcings /n
+"../the project path/camels_h5/basin_mean_forcing/daymet/HUC_id(e.g., 01, 02, 03, 04, 05...)/{basin_id}_lump_cida_forcing_leap.txtt"：CAMELS basin mean_forcings
 "../the project path/Models_h5/"：Model storage path  
