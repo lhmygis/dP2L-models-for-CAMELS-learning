@@ -61,24 +61,51 @@ The code was tested with Python 3.6. To use this code, please do:
 To implement the regional dP2L model (Process learning LSTM pipeline + parameterization DNN pipeline) as developed in the study, we provide `ScaleLayer_regional_parameterization`, `LSTM_parameterization`, and `regional_dP2L` classes in the `dP2L_class.py`. Below are some details to use the classes for creating the regional dP2L model:
 
    ```python
-from libs.hydrolayer import RegionalPRNNLayer, RegionalConv1Layer, RegionalConv2Layer, ScaleLayer
+class ScaleLayer_regional_parameterization(Layer):
 
-x_forcing = Input(shape=train_forcing[0].shape[], name='Input_forcing')
-x_attrs   = Input(shape=train_attrs[0].shape, name='Input_attrs')
-hydro = RegionalPRNNLayer(h_nodes=32, seed=200, name='RegionalPRNN')([x_forcing, x_attrs])
 
-x_forcing_scaled = ScaleLayer(name='ScaleForcing')(x_forcing)
-x_new = Concatenate(axis=-1, name='ConcatBW')([x_forcing_scaled, hydro])
+    def __init__(self, **kwargs):
+        super(ScaleLayer_regional_parameterization, self).__init__(**kwargs)
 
-conv1 = RegionalConv1Layer(h_nodes=8, seed=200, name='RegionalConv1')([x_new, x_attrs])
-conv2 = RegionalConv2Layer(h_nodes=8, seed=200, name='RegionalConv2')([conv1, x_attrs])
+    def build(self, input_shape):
+        self.t_mean = self.add_weight(name='t_mean', shape=(1,),  
+                                 initializer=initializers.Constant(value=10.50360728383252),
+                                 constraint=constraints.min_max_norm(min_value=0.0, max_value=10000.0, rate=0.9),
+                                 trainable=False)
+        self.t_std = self.add_weight(name='t_std', shape=(1,), 
+                                 initializer=initializers.Constant(value=10.30964231561827),
+                                 constraint=constraints.min_max_norm(min_value=0.0, max_value=10000.0, rate=0.9),
+                                 trainable=False)
 
-model = Model([x_forcing, x_attrs], conv2)
+        self.dayl_mean = self.add_weight(name='dayl_mean', shape=(1,), 
+                                 initializer=initializers.Constant(value=0.49992111027762387),
+                                 constraint=constraints.min_max_norm(min_value=0.0, max_value=10000.0, rate=0.9),
+                                 trainable=False)
+        self.dayl_std = self.add_weight(name='dayl_std', shape=(1,), 
+                                 initializer=initializers.Constant(value=0.08233807739244361),
+                                 constraint=constraints.min_max_norm(min_value=0.0, max_value=10000.0, rate=0.9),
+                                 trainable=False)
+
+
+        super(ScaleLayer_regional_parameterization, self).build(input_shape)
+
+    def call(self, inputs):
+        met = inputs[:,:,:2]
+
+        self.t_scaled = (met[:,:,0:1] - self.t_mean) / self.t_std
+        self.dayl_scaled = (met[:,:,1:2] - self.dayl_mean) / self.dayl_std
+
+
+        self.met_scaled = K.concatenate((self.t_scaled, self.dayl_scaled), axis=-1)
+
+        attrs = inputs[:,:,2:]
+
+        return  K.concatenate((self.met_scaled, attrs), axis=-1)
+
+    def compute_output_shape(self, input_shape):
+        return input_shape
    ```
 
-Please note:
-1. `x_forcing` represents the meteorological time sequences with a shape of `[sample size, sequence length, 5]`, where the first three variables should be *precipitation*, *mean temperature*, and *day length*.
-2. `x_attrs` represents the catchment attributes with a shape of `[sample size, 27]`, where the attribute values must be scaled in advance (I recommend using the standardization).
-3. Slightly different from the conceptual diagram in the paper, we merge the parameterization into respective layers directly in the implementation. You can also separate each merged layer into two layers by treating the generated `theta_p` and `theta_n` as explicit variables.
-4. Please read carefully the help notes in each developed layer if you would like to adapt the architectures for your research.
+For `ScaleLayer_regional_parameterization`, please note:
+1. `self.t_mean`, `self.t_std`, `self.dayl_mean`, and `self.t_std` represent the mean and standard deviation of daily temperature and day length of the training basin set during the training period. When the basin set is different or the training period is different, the four parameters also need to be modified. 
 
