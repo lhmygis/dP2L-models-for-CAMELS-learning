@@ -30,3 +30,10 @@ The code was tested with Python 3.6. To use this code, please do:
    ```shell
    conda env create -f tensorflow_2.6.yml -n dP2L_environment
    ```
+
+2. Please change the following working path (dP2L1_Train_Demo.py) to your owns:
+
+   ```shell
+   working_path = "../the project path"
+   attrs_path = "../the project path/CAMELS_attributes/attributedata_671.csv" 
+   ```
