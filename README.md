@@ -24,7 +24,7 @@ The python environment required to run the GPU version dP2L model includes: absl
 # Quick Start：
 The code was tested with Python 3.6. To use this code, please do:
 
-1. Clone the repo using Conda. Note*：In the tensorflow_2.6.yml file, the last line prefix: ..\Users\anaconda3\envs\tensorflow_2.6 specifies the installation path of the Conda environment.
+1. Clone the repo using Conda. Note*：In the tensorflow_2.6.yml file, the last line `prefix: ..\Users\anaconda3\envs\tensorflow_2.6` specifies the installation path of the Conda environment.
    Please make sure to change this path to match the location of your own Conda installation. This line is automatically generated when exporting environments, and keeping an incorrect path may cause issues during environment creation:
 
    ```shell
