@@ -18,3 +18,15 @@ The python environment required to run the GPU version dP2L model includes: absl
 "../the project path/camels_h5/basin_mean_forcing/daymet/HUC_id(e.g., 01, 02, 03, 04, 05...)/{basin_id}_lump_cida_forcing_leap.txt"：CAMELS basin mean_forcings
 
 "../the project path/Models_h5/"：Model storage path  
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Quick Start：
+The code was tested with Python 3.6. To use this code, please do:
+
+1. Clone the repo:
+
+   ```shell
+   git clone https://github.com/oreopie/physics-aware-dl.git
+   cd physics-aware-dl
+   ```
