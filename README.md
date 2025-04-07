@@ -59,6 +59,7 @@ The code was tested with Python 3.6. To use this code, please do:
 
 
 ## Tips on the regional dP2L model
+(For other questions, please contact lh_mygis@163.com. We are happy to work together to further develop the dP2L model and gradually complete this model repository.)
 
 To implement the regional dP2L model (Process learning LSTM pipeline + parameterization DNN pipeline) as developed in the study, we provide `ScaleLayer_regional_parameterization`, `LSTM_parameterization`, and `regional_dP2L` classes in the `dP2L_class.py`. Below are some details to use the classes for creating the regional dP2L model:
 
