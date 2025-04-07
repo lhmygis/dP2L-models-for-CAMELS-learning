@@ -52,3 +52,5 @@ The code was tested with Python 3.6. To use this code, please do:
        |---...	
        |---18\
    ```
+
+4. Start `PyCharm` or `Jupyter Notebook`, and run the `dP2L_Train_Demo.py` locally.
