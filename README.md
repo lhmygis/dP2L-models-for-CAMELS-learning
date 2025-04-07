@@ -107,5 +107,4 @@ class ScaleLayer_regional_parameterization(Layer):
    ```
 
 For the `ScaleLayer_regional_parameterization` class, please note:
-1. `self.t_mean`, `self.t_std`, `self.dayl_mean`, and `self.dayl_std` represent the mean and standard deviation of daily temperature and day length of the training basin set during the training period. When the basin set is different or the training period is different, the four parameters also need to be modified. 
-
+`self.t_mean`, `self.t_std`, `self.dayl_mean`, and `self.dayl_std` represent the mean and standard deviation of daily temperature and day length of the training basin set during the training period. When the basin set is different or the training period is different, the four parameters also need to be modified.
