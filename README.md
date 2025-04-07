@@ -37,3 +37,18 @@ The code was tested with Python 3.6. To use this code, please do:
    working_path = "../the project path"
    attrs_path = "../the project path/CAMELS_attributes/attributedata_671.csv" 
    ```
+
+3. Download CAMELS-US dataset `https://ral.ucar.edu/solutions/products/camels` or use the example data provided in this repository, and reorganize the directory as follows:
+
+   ```
+   camels_data\
+   |---basin_mean_forcing\
+   |   |---daymet\
+   |       |---01\
+   |       |---...	
+   |       |---18	\
+   |---usgs_streamflow\
+       |---01\
+       |---...	
+       |---18\
+   ```
