@@ -397,107 +397,13 @@ class regional_dP2L(Layer):
 
 
         if self.mode == "normal":
-            return K.concatenate([effective_rainfall, s1, et], axis=-1)
+            return qsub + qsurf
         elif self.mode == "analysis":
             return K.concatenate([s0, m, et, s1], axis=-1)
 
     def compute_output_shape(self, input_shape):
         if self.mode == "normal":
-            return (input_shape[0], input_shape[1], 3)
+            return (input_shape[0], input_shape[1], 1)
         elif self.mode == "analysis":
             return (input_shape[0], input_shape[1], 4)
 
-#This class is LSTMq
-class LSTMq(Layer):
-    def __init__(self, input_xd, hidden_size, seed=200,**kwargs):
-        self.input_xd = input_xd
-        self.hidden_size = hidden_size
-        self.seed = seed
-        super(LSTMq, self).__init__(**kwargs)
-
-    def build(self, input_shape):
-
-        self.w_ih = self.add_weight(name='w_ih', shape=(self.input_xd, 4 * self.hidden_size),
-                                 initializer=initializers.Orthogonal(seed=self.seed - 5),
-                                 trainable=True)
-
-        self.w_hh = self.add_weight(name='w_hh',
-                                       shape=(self.hidden_size, 4 * self.hidden_size),
-                                       initializer=initializers.Orthogonal(seed=self.seed + 5),
-                                       trainable=True)
-
-        self.bias = self.add_weight(name='bias',
-                                    shape=(4 * self.hidden_size, ),
-                                    #initializer = 'random_normal',
-                                    initializer=initializers.Constant(value=0),
-                                    trainable=True)
-
-        self.shape = input_shape
-        self.reset_parameters()
-        super(LSTMq, self).build(input_shape)
-
-
-    def reset_parameters(self):
-        #self.w_ih.initializer = initializers.Orthogonal(seed=self.seed - 5)
-        #self.w_sh.initializer = initializers.Orthogonal(seed=self.seed + 5)
-
-        w_hh_data = K.eye(self.hidden_size)
-        #bias_s_batch = K.repeat_elements(bias_s_batch, rep=sample_size_d, axis=0)
-        w_hh_data = K.repeat_elements(w_hh_data, rep=4, axis=1)
-        self.w_hh = w_hh_data
-
-        #self.bias.initializer = initializers.Constant(value=0)
-        #self.bias_s.initializer = initializers.Constant(value=0)
-
-    def call(self, inputs_x):
-        forcing = inputs_x  #[batch, seq_len, dim]
-        #print('forcing_shape:',forcing.shape)
-        #attrs = inputs_x[1]     #[batch, dim]
-        #print('attrs_shape:',attrs.shape)
-
-        forcing_seqfir = K.permute_dimensions(forcing, pattern=(1, 0, 2))  #[seq_len, batch, dim]
-        #print('forcing_seqfir_shape:',forcing_seqfir.shape)
-
-        #attrs_seqfir = K.permute_dimensions(attrs, pattern=(1, 0, 2))  #[seq_len, batch, dim]
-        #print('attrs_seqfir_shape:',attrs_seqfir.shape)
-
-
-        seq_len = forcing_seqfir.shape[0]
-        #print('seq_len:',seq_len)
-        batch_size = forcing_seqfir.shape[1]
-        #print('batch_size:',batch_size)
-
-        #init_states = [K.zeros((K.shape(forcing)[0], 2))]
-        #h0, c0 = [K.zeros(shape= (sample_size_d,self.hidden_size)),K.zeros(shape= (sample_size_d,self.hidden_size))]
-        h0 = K.zeros(shape= (batch_size, self.hidden_size))
-        c0 = K.zeros(shape= (batch_size, self.hidden_size))
-        h_x = (h0, c0)
-
-        h_n, c_n = [], []
-
-        bias_batch = K.expand_dims(self.bias, axis=0)
-        bias_batch = K.repeat_elements(bias_batch, rep=batch_size, axis=0)
-        #print("bias_batch:",bias_batch.shape)
-
-        #bias_s_batch = K.expand_dims(self.bias_s, axis=0)
-        #bias_s_batch = K.repeat_elements(bias_s_batch, rep=batch_size, axis=0)
-        #i = K.sigmoid(K.dot(attrs, self.w_sh) + bias_s_batch)
-
-        for t in range(seq_len):
-            h_0, c_0 = h_x
-            
-            gates =((K.dot(h_0, self.w_hh) + bias_batch) + K.dot(forcing_seqfir[t], self.w_ih))
-            f, i, o, g = tf.split(value=gates, num_or_size_splits=4, axis=1)
-
-            next_c = K.sigmoid(f) * c_0 + K.sigmoid(i) * K.tanh(g)
-            next_h = K.sigmoid(o) * K.tanh(next_c)
-
-            h_n.append(next_h)
-            c_n.append(next_c)
-
-            h_x = (next_h,next_c)
-
-        h_n = K.stack(h_n, axis=0)
-        c_n = K.stack(c_n, axis=0)
-
-        return h_n
