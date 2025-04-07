@@ -53,4 +53,4 @@ dependencies:
       - werkzeug==3.0.3
       - wrapt==1.12.1
       - zipp==3.19.2
-prefix: C:\Users\Heng\anaconda3\envs\tensorflow_2.6
+prefix: ..\Users\anaconda3\envs\tensorflow_2.6   
