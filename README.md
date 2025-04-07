@@ -27,6 +27,5 @@ The code was tested with Python 3.6. To use this code, please do:
 1. Clone the repo:
 
    ```shell
-   git clone https://github.com/oreopie/physics-aware-dl.git
-   cd physics-aware-dl
+   conda env create -f tensorflow_2.6.yml -n dP2L_environment
    ```
