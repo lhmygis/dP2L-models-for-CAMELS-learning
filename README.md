@@ -28,7 +28,7 @@ The code was tested with Python 3.6. To use this code, please do:
    Please make sure to change this path to match the location of your own Conda installation. This line is automatically generated when exporting environments, and keeping an incorrect path may cause issues during environment creation:
 
    ```shell
-   conda env create -f tensorflow_2.6.yml -n dP2L_environment
+   conda env create -f tensorflow_2.6.yml -n tensorflow_2.6
    ```
 
 2. Please change the following working path (dP2L_Train_Demo.py) to your owns:
