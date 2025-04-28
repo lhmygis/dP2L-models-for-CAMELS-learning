@@ -184,5 +184,5 @@ model = create_model(input_xd_shape=(train_x.shape[1], train_x.shape[2]),
                      hodes = 64, seed = 101)
 model.summary()
 
-prnn_ealstm_history = train_model(model=model, train_x=train_x,
+dP2L_history = train_model(model=model, train_x=train_x,
                                   train_y=train_y, ep_number=100, lrate=0.001, save_path=save_path_models)
