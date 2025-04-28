@@ -82,7 +82,7 @@ The code was tested with Python 3.6. To use this code, please do:
    ```python
 working_path = "Root Directory\\dP2L"
 attrs_path = "Root Directory\\dP2L\\camels_data\\standardized_CAMELS_attributes.csv"
-save_path_models = f"Root Directory\dP2L\\dP2L.h5"
+save_path_models = f"Root Directory\\dP2L\\dP2L.h5"
    ```
 
   Second, add 11 basin_ids to the basin_id list in dP2L_Train_Demo.py
