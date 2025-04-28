@@ -102,7 +102,7 @@ basin_id = [
    ```
 
   Third, run the dP2L_Train_Demo.py. The successful operation interface is as follows：
-  ![image](images/dP2L_model.png)
+  ![image](images/Run_case.png)
 
 
 ## Tips on the regional dP2L model
