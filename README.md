@@ -58,6 +58,15 @@ The code was tested with Python 3.6. To use this code, please do:
 4. Start `PyCharm` or `Jupyter Notebook`, and run the `dP2L_Train_Demo.py` locally.
 
 
+
+5. A simple example for training 11 basins
+(1) 
+
+
+
+
+
+
 ## Tips on the regional dP2L model
 (For other questions, please contact lh_mygis@163.com. We are happy to work together to further develop the dP2L model and gradually complete this model repository.)
 
