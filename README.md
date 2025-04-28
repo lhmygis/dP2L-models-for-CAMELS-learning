@@ -83,9 +83,23 @@ The code was tested with Python 3.6. To use this code, please do:
 working_path = "Root Directory\\dP2L"
 attrs_path = "Root Directory\\dP2L\\camels_data\\standardized_CAMELS_attributes.csv"
 save_path_models = f"Root Directory\dP2L\\dP2L.h5"
-   ```
+   ```<br>
 
-
+  second, Add 11 basin_ids to the basin_id list in dP2L_Train_Demo.py
+   ```python
+basin_id = [
+'1022500',
+'1031500',
+'1047000',
+'1052500',
+'1054200',
+'1055000',
+'1057000',
+'1073000',
+'1078000',
+'1123000',
+'1134500']
+   ```<br>
 
 
 
