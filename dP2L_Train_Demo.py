@@ -151,8 +151,10 @@ print(f'{train_x.shape}, {train_y.shape}')
 
 
 def create_model(input_xd_shape, hodes, seed):
-    xd_input_for_dP2L = Input(shape=input_xd_shape, batch_size=321, name='Input_xd1')
-
+    #Setting batch_size=1 within xd_input_for_dP2L means that during each training epoch, the model is updated one sample at a time. 
+    #You can also set it to other values, but the batch size should evenly divide the total number of samples.
+    
+    xd_input_for_dP2L = Input(shape=input_xd_shape, batch_size=1, name='Input_xd1') 
     hydro_output = regional_dP2L(mode='normal', h_nodes = hodes, seed = seed, name='Regional_dP2L_PUB')(xd_input_for_dP2L)
     
     model = Model(inputs=xd_input_for_dP2L, outputs=hydro_output)
@@ -174,7 +176,7 @@ def train_model(model, train_x1, train_y, ep_number, lrate, save_path):
     model.compile(loss= loss.nse_loss, metrics=[loss.nse_metrics],
                   optimizer=tf.keras.optimizers.Adam(learning_rate=lrate,clipnorm=1.0))
 
-    history = model.fit(x=train_x1, y=train_y, epochs=ep_number, batch_size=321,
+    history = model.fit(x=train_x1, y=train_y, epochs=ep_number, batch_size=1,
                         callbacks=[save, es, reduce, tnan])
     return history
 
