@@ -40,7 +40,7 @@ The code was tested with Python 3.6. To use this code, please do:
    save_path_models = f"../the project path/Models_h5/dP2L.h5"
    ```
 
-3. Download CAMELS-US dataset `https://ral.ucar.edu/solutions/products/camels` or use the example data provided in this repository, and reorganize the two directory as follows:
+3. Download CAMELS-US dataset `https://ral.ucar.edu/solutions/products/camels` or use the example data provided in this repository, and reorganize the directory as follows:
 
    ```
    Root Directory\dP2L\
