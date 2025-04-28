@@ -63,17 +63,15 @@ The code was tested with Python 3.6. To use this code, please do:
    |         |---...	
    |         |---18	\
    |---usgs_streamflow\
-           |---01\
+             |---01\
              |---...	
              |---18\
    ```
 
-5. Start `PyCharm` or `Jupyter Notebook`, and run the `dP2L_Train_Demo.py` locally.
+4. Start `PyCharm` or `Jupyter Notebook`, and run the `dP2L_Train_Demo.py` locally.
 
-
-
-6. A simple example for training 11 basins
-    [Note*：Once you have set up the model dependencies, downloaded the CAMELS dataset, and prepared a standardized attribute CSV file for the CAMELS basins, you can follow the instructions below to run the code]
+5. A simple example for training 11 basins
+    [Note*：After setting up model dependencies, downloading the CAMELS dataset, preparing the standardized attribute CSV file of the CAMELS watershed, and setting up the code path and data path as guided in step 3, you can run the code as follows]
 
 
 
