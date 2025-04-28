@@ -8,7 +8,7 @@ import tensorflow as tf
 
 def nse_loss(y_true, y_pred):
 
-    y_pred = K.permute_dimensions(y_pred, pattern=(1,0,2))  #[2212,60,1] ->  [60,2218,1]
+    #y_pred = K.permute_dimensions(y_pred, pattern=(1,0,2))  #[2212,60,1] ->  [60,2218,1]
 
     y_true = y_true[:, :, :]  # Omit values in the spinup period (the first 365 days)
     y_pred = y_pred[:, :, :]  # Omit values in the spinup period (the first 365 days)
@@ -24,7 +24,7 @@ def nse_loss(y_true, y_pred):
 def nse_metrics(y_true, y_pred):
 
 
-    y_pred = K.permute_dimensions(y_pred, pattern=(1,0,2))  #[2212,60,1] ->  [60,2218,1]
+    #y_pred = K.permute_dimensions(y_pred, pattern=(1,0,2))  #[2212,60,1] ->  [60,2218,1]
 
     y_true = y_true[:, :, :]  # Omit values in the spinup period (the first 365 days)
     y_pred = y_pred[:, :, :]  # Omit values in the spinup period (the first 365 days)
