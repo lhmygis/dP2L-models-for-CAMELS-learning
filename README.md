@@ -51,7 +51,7 @@ The code was tested with Python 3.6. To use this code, please do:
    ```
 
    ```
-   Root Directory\dP2L\camels_data\
+   Root Directory\dP2L\CAMELS_attributes\
    |   |standardized_CAMELS_attributes.csv
    ```
    
