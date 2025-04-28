@@ -71,7 +71,14 @@ The code was tested with Python 3.6. To use this code, please do:
 4. Start `PyCharm` or `Jupyter Notebook`, and run the `dP2L_Train_Demo.py` locally.
 
 5. A simple example for training 11 basins
-    [Note*：After setting up model dependencies, downloading the CAMELS dataset, preparing the standardized attribute CSV file of the CAMELS watershed, and setting up the code path and data path as guided in step 3, you can run the code as follows]
+    [Note*：After setting up model dependencies, downloading the CAMELS dataset, preparing the standardized attribute CSV file of the CAMELS watershed, and setting up the code path and data path as guided in step 3, you can run the code as follows]<br>
+
+  first, open the dP2L_Train_Demo.py, Change the paths to your PC
+   ```python
+working_path = "Root Directory\\dP2L"
+attrs_path = "Root Directory\\dP2L\\camels_data\\standardized_CAMELS_attributes.csv"
+save_path_models = f"Root Directory\dP2L\\dP2L.h5"
+   ```
 
 
 
