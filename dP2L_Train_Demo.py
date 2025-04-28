@@ -67,7 +67,6 @@ for i in range(len(basin_id)):
     hydrodata = DataforIndividual(working_path, basin_id[i]).load_data()
 
     train_set = hydrodata[hydrodata.index.isin(pd.date_range(training_start, training_end))]
-    #train_set1 = hydrodata[hydrodata.index.isin(pd.date_range(training_start, training_end))]
 
     if a.startswith('0'):
         single_basin_id = a[1:]
@@ -86,19 +85,14 @@ for i in range(len(basin_id)):
     local_static_x_for_train = np.expand_dims(local_static_x, axis=0)
     local_static_x_for_train = local_static_x_for_train.repeat(train_set.shape[0], axis=0)
     result = np.concatenate((train_set, local_static_x_for_train), axis=-1)
-    result1 = np.concatenate((train_set1, local_static_x_for_train), axis=-1)
     all_list.append(result)
-    all_list1.append(result1)
 
 result_ = all_list[0]
-#result1_ = all_list1[0]
 
 for i in range(len(all_list)-1):
     result_ = np.concatenate((result_, all_list[i+1]), axis=0)
-    #result1_ = np.concatenate((result1_, all_list1[i+1]), axis=0)
 
 print(result_.shape)
-#print(result1_.shape)
 
 sum_result = result_[:,
              [0, 1, 2, 3, 4, 32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
@@ -161,7 +155,7 @@ def create_model(input_xd_shape, hodes, seed):
     return model
 
 
-def train_model(model, train_x1, train_y, ep_number, lrate, save_path):
+def train_model(model, train_x, train_y, ep_number, lrate, save_path):
     save = callbacks.ModelCheckpoint(save_path, verbose=0, save_best_only=True, monitor='nse_metrics', mode='max',
                                      save_weights_only=True)
 
@@ -176,7 +170,7 @@ def train_model(model, train_x1, train_y, ep_number, lrate, save_path):
     model.compile(loss= loss.nse_loss, metrics=[loss.nse_metrics],
                   optimizer=tf.keras.optimizers.Adam(learning_rate=lrate,clipnorm=1.0))
 
-    history = model.fit(x=train_x1, y=train_y, epochs=ep_number, batch_size=1,
+    history = model.fit(x=train_x, y=train_y, epochs=ep_number, batch_size=1,
                         callbacks=[save, es, reduce, tnan])
     return history
 
@@ -190,5 +184,5 @@ model = create_model(input_xd_shape=(train_x.shape[1], train_x.shape[2]),
                      hodes = 64, seed = 101)
 model.summary()
 
-prnn_ealstm_history = train_model(model=model, train_x1=train_x,
+prnn_ealstm_history = train_model(model=model, train_x=train_x,
                                   train_y=train_y, ep_number=100, lrate=0.001, save_path=save_path_models)
