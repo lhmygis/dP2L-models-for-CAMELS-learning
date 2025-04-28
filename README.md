@@ -40,26 +40,39 @@ The code was tested with Python 3.6. To use this code, please do:
    save_path_models = f"../the project path/Models_h5/dP2L.h5"
    ```
 
-3. Download CAMELS-US dataset `https://ral.ucar.edu/solutions/products/camels` or use the example data provided in this repository, and reorganize the directory as follows:
+3. Download CAMELS-US dataset `https://ral.ucar.edu/solutions/products/camels` or use the example data provided in this repository, and reorganize the two directory as follows:
 
    ```
-   camels_data\
+   Root Directory\dP2L\
+   |   |dP2L_Train_Demo.py
+   |   |dP2L_class.py
+   |   |dataprocess.py
+   |   |loss.py
+   ```
+
+   ```
+   Root Directory\dP2L\camels_data\
+   |   |standardized_CAMELS_attributes.csv
+   ```
+
+   ```
+   Root Directory\dP2L\camels_data\
    |---basin_mean_forcing\
-   |   |---daymet\
-   |       |---01\
-   |       |---...	
-   |       |---18	\
+   |       |---daymet\
+   |         |---01\
+   |         |---...	
+   |         |---18	\
    |---usgs_streamflow\
-       |---01\
-       |---...	
-       |---18\
+           |---01\
+             |---...	
+             |---18\
    ```
 
-4. Start `PyCharm` or `Jupyter Notebook`, and run the `dP2L_Train_Demo.py` locally.
+5. Start `PyCharm` or `Jupyter Notebook`, and run the `dP2L_Train_Demo.py` locally.
 
 
 
-5. A simple example for training 11 basins
+6. A simple example for training 11 basins
     [Note*：Once you have set up the model dependencies, downloaded the CAMELS dataset, and prepared a standardized attribute CSV file for the CAMELS basins, you can follow the instructions below to run the code]
 
 
