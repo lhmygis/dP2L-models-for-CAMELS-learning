@@ -78,14 +78,14 @@ The code was tested with Python 3.6. To use this code, please do:
 5. A simple example for training 11 basins
     [Note*：After setting up model dependencies, downloading the CAMELS dataset, preparing the standardized attribute CSV file of the CAMELS watershed, and setting up the code path and data path as guided in step 3, you can run the code as follows]<br>
 
-  first, open the dP2L_Train_Demo.py, Change the paths to your PC
+  First, open the dP2L_Train_Demo.py, change the paths to your PC
    ```python
 working_path = "Root Directory\\dP2L"
 attrs_path = "Root Directory\\dP2L\\camels_data\\standardized_CAMELS_attributes.csv"
 save_path_models = f"Root Directory\dP2L\\dP2L.h5"
    ```
 
-  second, open the dP2L_Train_Demo.py, Change the paths to your PC
+  Second, add 11 basin_ids to the basin_id list in dP2L_Train_Demo.py
    ```python
 basin_id = [
 '1022500',
@@ -100,6 +100,9 @@ basin_id = [
 '1123000',
 '1134500']
    ```
+
+  Third, run the dP2L_Train_Demo.py. The successful operation interface is as follows：
+  ![image](images/dP2L_model.png)
 
 
 ## Tips on the regional dP2L model
