@@ -81,7 +81,7 @@ The code was tested with Python 3.6. To use this code, please do:
   First, open the dP2L_Train_Demo.py, change the paths to your PC
    ```python
 working_path = "Root Directory\\dP2L"
-attrs_path = "Root Directory\\dP2L\\camels_data\\standardized_CAMELS_attributes.csv"
+attrs_path = "Root Directory\\dP2L\\CAMELS_attributes\\standardized_CAMELS_attributes.csv"
 save_path_models = f"Root Directory\\dP2L\\dP2L.h5"
    ```
 
