@@ -284,7 +284,7 @@ class regional_dP2L(Layer):
         f = f / 10                 
         smax = smax * 1400 + 100   
         qmax = qmax * 40 + 10      
-        pet = pet * 59.9 + 0.1         
+        pet = pet * 39.9 + 0.1         
 
         et = self.heaviside(s1) * self.heaviside(s1 - smax) * pet + \
             self.heaviside(s1) * self.heaviside(smax - s1) * pet * (s1 / smax)
