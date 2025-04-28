@@ -129,15 +129,15 @@ def generate_train_test(train_set, wrap_length):
     print("Q_std:",  np.std(train_y_np[:,-1:]))
 
 
-    wrap_number_train = (train_x_np.shape[0] - wrap_length) // 7 + 1
+    wrap_number_train = (train_x_np.shape[0] - wrap_length) // 1 + 1
 
     train_x = np.empty(shape=(wrap_number_train, wrap_length, train_x_np.shape[1]))
     train_y = np.empty(shape=(wrap_number_train, wrap_length, train_y_np.shape[1]))
 
 
     for i in range(wrap_number_train):
-        train_x[i, :, :] = train_x_np[i * 7:(wrap_length + i * 7), :]
-        train_y[i, :, :] = train_y_np[i * 7:(wrap_length + i * 7), :]
+        train_x[i, :, :] = train_x_np[i * 1:(wrap_length + i * 1), :]
+        train_y[i, :, :] = train_y_np[i * 1:(wrap_length + i * 1), :]
 
     return train_x, train_y
 
