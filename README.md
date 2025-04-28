@@ -54,6 +54,11 @@ The code was tested with Python 3.6. To use this code, please do:
    Root Directory\dP2L\camels_data\
    |   |standardized_CAMELS_attributes.csv
    ```
+   
+   ```
+   Root Directory\dP2L\
+   |   |basin_list.txt
+   ```
 
    ```
    Root Directory\dP2L\camels_data\
