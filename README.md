@@ -60,8 +60,8 @@ The code was tested with Python 3.6. To use this code, please do:
 
 
 5. A simple example for training 11 basins
-   Note*：Once you have set up the model dependencies, downloaded the CAMELS dataset, and prepared a standardized attribute CSV file for the CAMELS basins, you can follow the instructions below to run     the code.
-   (1)
+    [Note*：Once you have set up the model dependencies, downloaded the CAMELS dataset, and prepared a standardized attribute CSV file for the CAMELS basins, you can follow the instructions below to run the code]
+
 
 
 
