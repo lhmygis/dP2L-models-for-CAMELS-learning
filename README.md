@@ -1,6 +1,6 @@
 # dP2L-models-for-CAMELS-learning：
 dP2L was developed by Heng Li, Chunxiao Zhang* and others from China University of Geosciences (Beijing) for rainfall-runoff learning in large sample basins. 
-The related manuscript "***A Differentiability‌-based Processes and Parameters Learning Hydrologic Model for Advancing Runoff Prediction and Process Understanding***" is currently under peer review in *Journal of Hydrology*.
+The related manuscript "***A Differentiability‌-based Processes and Parameters Learning Hydrologic Model for Advancing Runoff Prediction and Process Understanding***" has been conditionally accepted (minor revisions) by the *Journal of Hydrology*.
 ![image](images/dP2L_model.png)
 
 # Model dependency library：
